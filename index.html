@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI Photo Magic</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <header><div class="logo">AI</div><div><h1>AI Photo Magic</h1><p>Your Photos, Our AI Magic ✨</p></div></header>
+    <section class="hero">
+      <h2>एक Photo, हजारों Possibilities</h2>
+      <input id="photo" type="file" accept="image/*">
+      <label for="photo" class="upload">📸 Photo Upload</label>
+      <img id="preview" alt="Preview">
+    </section>
+    <section class="grid">
+      <button data-action="background">🌄 Background Change</button>
+      <button data-action="clothes">👕 Clothes Change</button>
+      <button data-action="enhance">✨ AI Enhance</button>
+      <button data-action="cinematic">🎨 Cinematic</button>
+    </section>
+    <textarea id="prompt" placeholder="क्या बदलाव चाहिए? उदाहरण: background को mountain sunset कर दो"></textarea>
+    <button id="generate" class="generate">✨ Generate AI Photo</button>
+    <p id="status"></p>
+    <img id="result" alt="AI result">
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
