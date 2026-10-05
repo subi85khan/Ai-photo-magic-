@@ -5,6 +5,7 @@ const preview = document.getElementById("preview");
 const generateBtn = document.getElementById("generateBtn");
 const promptInput = document.getElementById("prompt");
 const clothesBtn = document.getElementById("clothesBtn");
+const backgroundBtn = document.getElementById("backgroundBtn");
 if (upload) {
   upload.addEventListener("change", () => {
     const file = upload.files[0];
@@ -98,6 +99,52 @@ if (clothesBtn) {
     } finally {
       clothesBtn.disabled = false;
       clothesBtn.textContent = "👗 Clothes Change";
+    }
+  });
+}
+if (backgroundBtn) {
+  backgroundBtn.addEventListener("click", async () => {
+    const file = upload?.files[0];
+
+    if (!file) {
+      alert("पहले फोटो upload करें");
+      return;
+    }
+
+    const userPrompt =
+      promptInput?.value || "beautiful natural background";
+
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append(
+      "prompt",
+      `Change only the background to: ${userPrompt}. Keep the person, face, hair, clothes, body and pose exactly the same. Make the new background realistic and natural.`
+    );
+
+    backgroundBtn.disabled = true;
+    backgroundBtn.textContent = "Changing Background...";
+
+    try {
+      const response = await fetch(`${API_URL}/api/edit`, {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Background change failed");
+      }
+
+      if (data.image) {
+        preview.src = data.image;
+        preview.style.display = "block";
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      backgroundBtn.disabled = false;
+      backgroundBtn.textContent = "🌄 Background Change";
     }
   });
 }
