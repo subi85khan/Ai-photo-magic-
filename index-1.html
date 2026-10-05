@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Photo Magic</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>✨ AI Photo Magic</h1>
+    <p>AI se apni photo edit karein</p>
+
+    <div class="card">
+      <label for="imageUpload">📸 Photo Upload</label>
+      <input type="file" id="imageUpload" accept="image/*">
+
+      <img id="preview" alt="Photo preview"
+           style="display:none; max-width:100%; margin-top:15px; border-radius:15px;">
+
+      <label for="prompt">✍️ Apna Prompt</label>
+      <textarea id="prompt"
+        placeholder="Example: Background change to beautiful mountains"></textarea>
+
+      <button id="generateBtn">✨ Generate AI Photo</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
