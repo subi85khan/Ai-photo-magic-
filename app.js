@@ -6,6 +6,7 @@ const generateBtn = document.getElementById("generateBtn");
 const promptInput = document.getElementById("prompt");
 const clothesBtn = document.getElementById("clothesBtn");
 const backgroundBtn = document.getElementById("backgroundBtn");
+const enhanceBtn = document.getElementById("enhanceBtn");
 if (upload) {
   upload.addEventListener("change", () => {
     const file = upload.files[0];
@@ -145,6 +146,133 @@ if (backgroundBtn) {
     } finally {
       backgroundBtn.disabled = false;
       backgroundBtn.textContent = "🌄 Background Change";
+    }
+  });
+}
+if (enhanceBtn) {
+  enhanceBtn.addEventListener("click", async () => {
+    const file = upload?.files[0];
+
+    if (!file) {
+      alert("पहले फोटो upload करें");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append(
+      "prompt",
+      "Enhance this photo. Improve quality, sharpness, clarity and details. Keep the face, clothes, body, hair, pose and background exactly the same."
+    );
+
+    enhanceBtn.disabled = true;
+    enhanceBtn.textContent = "✨ Enhancing...";
+
+    try {
+      const response = await fetch(`${API_URL}/api/edit`, {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "AI Enhance failed");
+      }
+
+      if (data.image) {
+        preview.src = data.image;
+        preview.style.display = "block";
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      enhanceBtn.disabled = false;
+      enhanceBtn.textContent = "🔍 AI Enhance";
+    }
+  });
+if (enhanceBtn) {
+  enhanceBtn.addEventListener("click", async () => {
+    const file = upload?.files[0];
+
+    if (!file) {
+      alert("पहले फोटो upload करें");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append(
+      "prompt",
+      "Enhance this photo. Improve quality, sharpness, clarity and details. Keep the face, clothes, body, hair, pose and background exactly the same."
+    );
+
+    enhanceBtn.disabled = true;
+    enhanceBtn.textContent = "✨ Enhancing...";
+
+    try {
+      const response = await fetch(`${API_URL}/api/edit`, {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "AI Enhance failed");
+      }
+
+      if (data.image) {
+        preview.src = data.image;
+        preview.style.display = "block";
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      enhanceBtn.disabled = false;
+      enhanceBtn.textContent = "🔍 AI Enhance";
+    }
+  });
+}if (enhanceBtn) {
+  enhanceBtn.addEventListener("click", async () => {
+    const file = upload?.files[0];
+
+    if (!file) {
+      alert("पहले फोटो upload करें");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append(
+      "prompt",
+      "Enhance this photo. Improve quality, sharpness, clarity and details. Keep the face, clothes, body, hair, pose and background exactly the same."
+    );
+
+    enhanceBtn.disabled = true;
+    enhanceBtn.textContent = "✨ Enhancing...";
+
+    try {
+      const response = await fetch(`${API_URL}/api/edit`, {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "AI Enhance failed");
+      }
+
+      if (data.image) {
+        preview.src = data.image;
+        preview.style.display = "block";
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      enhanceBtn.disabled = false;
+      enhanceBtn.textContent = "🔍 AI Enhance";
     }
   });
 }
