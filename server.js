@@ -46,14 +46,18 @@ app.post("/api/edit", upload.single("image"), async (req, res) => {
       req.body.prompt || "Enhance this photo naturally.";
 
     const imageBase64 = req.file.buffer.toString("base64");
-    const client = new InferenceClient(process.env.HF_TOKEN);
-
-const result = await client.imageToImage({
-  model: "Qwen/Qwen-Image-Edit",
-  inputs: req.file.buffer,
-  prompt: prompt
+    const client = new InferenceClient({
+  provider: "fal-ai",
+  apiKey: process.env.HF_TOKEN
 });
 
+const result = await client.imageToImage(
+  req.file.buffer,
+  {
+    model: "Qwen/Qwen-Image-Edit",
+    prompt: prompt
+  }
+);
 const resultBuffer = Buffer.from(await result.arrayBuffer());
 
 const outputImage =
