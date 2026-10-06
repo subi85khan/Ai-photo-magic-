@@ -46,8 +46,8 @@ app.post("/api/edit", upload.single("image"), async (req, res) => {
       req.body.prompt || "Enhance this photo naturally.";
 
     const imageBase64 = req.file.buffer.toString("base64");
-    const client = new InferenceClient({
-  provider: "fal-ai",
+   const client = new InferenceClient({
+  provider: "auto",
   apiKey: process.env.HF_TOKEN
 });
 
