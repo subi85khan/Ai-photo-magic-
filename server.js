@@ -47,14 +47,14 @@ app.post("/api/edit", upload.single("image"), async (req, res) => {
 
     const imageBase64 = req.file.buffer.toString("base64");
    const client = new InferenceClient({
-  provider: "auto",
+   provider: "fal-ai"
   apiKey: process.env.HF_TOKEN
 });
 
 const result = await client.imageToImage(
   req.file.buffer,
   {
-    model: "Qwen/Qwen-Image-Edit",
+    model: "black-forest-labs/FLUX.2-klein-9B",
     prompt: prompt
   }
 );
