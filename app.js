@@ -5,12 +5,14 @@ const preview = document.getElementById("preview");
 const generateBtn = document.getElementById("generateBtn");
 const promptInput = document.getElementById("prompt");
 const clothesBtn = document.getElementById("clothesBtn");
-const clothesBtn = document.getElementById("clothesBtn");
 const backgroundBtn = document.getElementById("backgroundBtn");
 const enhanceBtn = document.getElementById("enhanceBtn");
+
+// Photo preview
 if (upload) {
   upload.addEventListener("change", () => {
     const file = upload.files[0];
+
     if (file && preview) {
       preview.src = URL.createObjectURL(file);
       preview.style.display = "block";
@@ -18,6 +20,7 @@ if (upload) {
   });
 }
 
+// AI Generate
 if (generateBtn) {
   generateBtn.addEventListener("click", async () => {
     const file = upload?.files[0];
@@ -48,6 +51,7 @@ if (generateBtn) {
 
       if (data.image) {
         preview.src = data.image;
+        preview.style.display = "block";
       } else {
         alert("AI model अभी connect नहीं है।");
       }
@@ -55,10 +59,12 @@ if (generateBtn) {
       alert(error.message);
     } finally {
       generateBtn.disabled = false;
-      generateBtn.textContent = "Generate AI Photo";
+      generateBtn.textContent = "✨ Generate AI Photo";
     }
   });
 }
+
+// Clothes Change
 if (clothesBtn) {
   clothesBtn.addEventListener("click", async () => {
     const file = upload?.files[0];
@@ -68,7 +74,8 @@ if (clothesBtn) {
       return;
     }
 
-    const userPrompt = promptInput?.value || "stylish modern clothes";
+    const userPrompt =
+      promptInput?.value || "stylish modern clothes";
 
     const formData = new FormData();
     formData.append("image", file);
@@ -102,6 +109,10 @@ if (clothesBtn) {
       clothesBtn.disabled = false;
       clothesBtn.textContent = "👗 Clothes Change";
     }
+  });
+}
+
+// Background Change
 if (backgroundBtn) {
   backgroundBtn.addEventListener("click", async () => {
     const file = upload?.files[0];
@@ -148,6 +159,8 @@ if (backgroundBtn) {
     }
   });
 }
+
+// AI Enhance
 if (enhanceBtn) {
   enhanceBtn.addEventListener("click", async () => {
     const file = upload?.files[0];
@@ -190,4 +203,4 @@ if (enhanceBtn) {
       enhanceBtn.textContent = "🔍 AI Enhance";
     }
   });
-}
+          }
