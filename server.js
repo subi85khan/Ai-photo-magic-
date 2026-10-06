@@ -1,5 +1,6 @@
 const express = require("express");
 const multer = require("multer");
+const { InferenceClient } = require("@huggingface/inference");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -45,39 +46,18 @@ app.post("/api/edit", upload.single("image"), async (req, res) => {
     const prompt =
       req.body.prompt || "Enhance this photo naturally.";
 
-    const imageBase64 = req.file.buffer.toString("base64");
-   const client = new InferenceClient({
-   provider: "fal-ai"
-  apiKey: process.env.HF_TOKEN
-});
+    const client = new InferenceClient(
+      process.env.HF_TOKEN
+    );
 
-const result = await client.imageToImage(
-  req.file.buffer,
-  {
-    model: "black-forest-labs/FLUX.2-klein-9B",
-    prompt: prompt
-  }
-);
-const resultBuffer = Buffer.from(await result.arrayBuffer());
-
-const outputImage =
-  `data:image/png;base64,${resultBuffer.toString("base64")}`;
-
-res.json({
-  image: outputImage
-});
-    if (!response.ok) {
-      const errorText = await response.text();
-
-      console.error("Hugging Face ERROR:", errorText);
-
-      return res.status(response.status).json({
-        error: `Hugging Face error: ${errorText}`
-      });
-    }
+    const result = await client.imageToImage({
+      model: "black-forest-labs/FLUX.2-klein-9B",
+      inputs: req.file.buffer,
+      prompt: prompt
+    });
 
     const resultBuffer = Buffer.from(
-      await response.arrayBuffer()
+      await result.arrayBuffer()
     );
 
     const outputImage =
