@@ -36,61 +36,54 @@ app.post("/api/edit", upload.single("image"), async (req, res) => {
       });
     }
 
-    const prompt = req.body.prompt || "Enhance this photo naturally.";
-
-    if (!process.env.REPLICATE_API_TOKEN) {
+    if (!process.env.HF_TOKEN) {
       return res.status(500).json({
-        error: "REPLICATE_API_TOKEN missing hai."
+        error: "HF_TOKEN missing hai."
       });
     }
 
-    // Replicate package load
-    const { default: Replicate } = await import("replicate");
+    const prompt =
+      req.body.prompt || "Enhance this photo naturally.";
 
-    const replicate = new Replicate({
-      auth: process.env.REPLICATE_API_TOKEN
-    });
+    const imageBase64 = req.file.buffer.toString("base64");
 
-    // Uploaded photo ko data URL mein convert karna
-    const mimeType = req.file.mimetype || "image/jpeg";
-    const imageData =
-      `data:${mimeType};base64,${req.file.buffer.toString("base64")}`;
-
-    // AI image edit
-    const output = await replicate.run(
-      "black-forest-labs/flux-kontext-pro",
+    const response = await fetch(
+      "https://router.huggingface.co/fal-ai/inference",
       {
-        input: {
-          prompt: prompt,
-          input_image: imageData,
-          aspect_ratio: "match_input_image",
-          output_format: "jpg",
-          safety_tolerance: 2
-        }
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.HF_TOKEN}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: "Qwen/Qwen-Image-Edit",
+          inputs: imageBase64,
+          parameters: {
+            prompt: prompt
+          }
+        })
       }
     );
 
-    let imageUrl;
+    if (!response.ok) {
+      const errorText = await response.text();
 
-    if (output && typeof output.url === "function") {
-      imageUrl = output.url();
-    } else if (typeof output === "string") {
-      imageUrl = output;
-    } else if (Array.isArray(output) && output.length > 0) {
-      imageUrl =
-        typeof output[0]?.url === "function"
-          ? output[0].url()
-          : output[0];
-    }
+      console.error("Hugging Face ERROR:", errorText);
 
-    if (!imageUrl) {
-      return res.status(500).json({
-        error: "AI image ka result nahi mila."
+      return res.status(response.status).json({
+        error: `Hugging Face error: ${errorText}`
       });
     }
 
+    const resultBuffer = Buffer.from(
+      await response.arrayBuffer()
+    );
+
+    const outputImage =
+      `data:image/png;base64,${resultBuffer.toString("base64")}`;
+
     res.json({
-      image: imageUrl
+      image: outputImage
     });
 
   } catch (error) {
@@ -103,5 +96,7 @@ app.post("/api/edit", upload.single("image"), async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Ai Photo Magic Backend running on port ${PORT}`);
+  console.log(
+    `Ai Photo Magic Backend running on port ${PORT}`
+  );
 });
