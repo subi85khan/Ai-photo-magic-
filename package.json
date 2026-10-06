@@ -12,3 +12,4 @@
     "replicate": "^1.0.1"
   }
 }
+"@huggingface/inference": "^4.13.0"
