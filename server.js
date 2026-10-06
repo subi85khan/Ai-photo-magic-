@@ -46,25 +46,22 @@ app.post("/api/edit", upload.single("image"), async (req, res) => {
       req.body.prompt || "Enhance this photo naturally.";
 
     const imageBase64 = req.file.buffer.toString("base64");
+    const client = new InferenceClient(process.env.HF_TOKEN);
 
-    const response = await fetch(
-      "https://router.huggingface.co/fal-ai/inference",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.HF_TOKEN}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          model: "Qwen/Qwen-Image-Edit",
-          inputs: imageBase64,
-          parameters: {
-            prompt: prompt
-          }
-        })
-      }
-    );
+const result = await client.imageToImage({
+  model: "Qwen/Qwen-Image-Edit",
+  inputs: req.file.buffer,
+  prompt: prompt
+});
 
+const resultBuffer = Buffer.from(await result.arrayBuffer());
+
+const outputImage =
+  `data:image/png;base64,${resultBuffer.toString("base64")}`;
+
+res.json({
+  image: outputImage
+});
     if (!response.ok) {
       const errorText = await response.text();
 
