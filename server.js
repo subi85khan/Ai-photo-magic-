@@ -51,7 +51,8 @@ app.post("/api/edit", upload.single("image"), async (req, res) => {
     );
 
     const result = await client.imageToImage({
-      model: "black-forest-labs/FLUX.2-klein-9B",
+  model: "black-forest-labs/FLUX.2-klein-9B",
+  provider: "fal-ai",
       inputs: new Blob([req.file.buffer], {
   type: req.file.mimetype
 }),
