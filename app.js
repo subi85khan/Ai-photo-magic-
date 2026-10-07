@@ -203,4 +203,4 @@ if (enhanceBtn) {
       enhanceBtn.textContent = "🔍 AI Enhance";
     }
   });
-          }
+  
