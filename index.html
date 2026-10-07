@@ -14,39 +14,37 @@
     <h1>✨ AI Photo Magic</h1>
     <p>AI se apni photo edit karein</p>
 
-    <label for="image">📸 Photo Upload</label>
-    <input type="file" id="image" accept="image/*">
+    <div class="card">
 
-    <label for="prompt">✍️ Apna Prompt</label>
-    <textarea id="prompt" placeholder="Example: Background change to beautiful mountains"></textarea>
+      <label for="imageUpload">📸 Photo Upload</label>
+      <input type="file" id="imageUpload" accept="image/*">
 
-    <div class="buttons">
+      <img
+        id="preview"
+        alt="Photo preview"
+        style="display:none; max-width:100%; margin-top:15px; border-radius:15px;"
+      >
 
-      <button onclick="generatePhoto()">
-        ✨ Generate AI Photo
-      </button>
+      <label for="prompt">✍️ Apna Prompt</label>
 
-      <button onclick="clothesChange()">
-        👗 Clothes Change
-      </button>
+      <textarea
+        id="prompt"
+        placeholder="Example: Background change to beautiful mountains"
+      ></textarea>
 
-      <button onclick="backgroundChange()">
-        🌄 Background Change
-      </button>
+      <button id="generateBtn">✨ Generate AI Photo</button>
 
-      <button onclick="aiEnhance()">
-        ✨ AI Enhance
-      </button>
+      <button id="clothesBtn">👗 Clothes Change</button>
+
+      <button id="backgroundBtn">🌄 Background Change</button>
+
+      <button id="enhanceBtn">✨ AI Enhance</button>
 
     </div>
 
-    <p id="status"></p>
-
-    <img id="resultImage" style="display:none; max-width:100%; margin-top:20px; border-radius:15px;">
-
   </div>
 
-  <script src="App.js"></script>
+  <script src="app.js"></script>
 
 </body>
 </html>
